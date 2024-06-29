@@ -1,0 +1,39 @@
+import numpy as np
+
+# generating data
+X = np.array([i for i in range(6000)]).reshape((-1,2))
+
+for i in range(3000):
+    X[i,0] = 1
+'''    
+we chosse all x0s to be 1 because we want the hypothesis to be 
+y = a * x_0 + m * x_1 = a + m * x_1 
+a is interception
+'''
+y = 2 * X[:,0] + 1.2 * X[:,1] + np.random.normal(scale=.2)
+# we have 3000 samples
+
+# initializing theta
+theta_0 = np.random.rand(2)
+
+i = 0  # number of iterations
+alpha = 0.0000000000001  # learning rate
+
+while True:
+    s0 = theta_0[0] * X[:, 0]
+    s1 = theta_0[1] * X[:, 1]
+    h_theta = s0 + s1
+    sum_zero_elements = np.sum((alpha * (y - h_theta) * X[:,0]))
+    sum_one_elements = np.sum((alpha * (y - h_theta) * X[:,1]))
+    sum_ = np.array([sum_zero_elements, sum_one_elements])
+    theta = theta_0 + sum_
+    i += 1
+    if ((theta[0] - theta_0[0]) < 0.00000001) and ((theta[1] - theta_0[1]) < 0.00000001):
+        break
+    theta_0 = theta
+
+def predict(x):
+    new_point = np.array([1, x])
+    result = np.dot(new_point, theta)
+    return result
+    
